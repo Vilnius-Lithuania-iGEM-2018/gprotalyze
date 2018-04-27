@@ -1,12 +1,12 @@
 package store
 
 import (
-	"github.com/sirupsen/logrus"
 	"github.com/olivere/elastic"
+	"github.com/sirupsen/logrus"
 
 	"context"
-	"fmt"
 	"errors"
+	"fmt"
 )
 
 // NewElasticStore creates and returns elastic client
@@ -18,16 +18,16 @@ func NewElasticStore(context context.Context) (*ElasticStore, error) {
 	store := ElasticStore{
 		client:  storeClient,
 		context: context,
-		logger: logrus.New(),
+		logger:  logrus.New(),
 	}
 	return &store, err
 }
 
 // ElasticStore is the elastic client implementation
 type ElasticStore struct {
-	client *elastic.Client
+	client  *elastic.Client
 	context context.Context
-	logger *logrus.Logger
+	logger  *logrus.Logger
 }
 
 func (store ElasticStore) Store(item DatabaseItem) error {
@@ -62,10 +62,10 @@ func (store ElasticStore) BulkStore(items []DatabaseItem) error {
 				len(response.Succeeded())))
 	}
 	store.logger.WithFields(logrus.Fields{
-		"launched": bulk.NumberOfActions(),
+		"launched":  bulk.NumberOfActions(),
 		"succeeded": response.Succeeded(),
-		"failed": response.Failed(),
-		"time": response.Took,
+		"failed":    response.Failed(),
+		"time":      response.Took,
 	}).Debug("elasticsearch BulkStore")
 	return nil
 }

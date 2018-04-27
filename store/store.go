@@ -6,8 +6,8 @@ package store
 // No schema past DataType and Id
 type DatabaseItem struct {
 	DataType string
-	Id string
-	Data interface{}
+	Id       string
+	Data     interface{}
 }
 
 // Store is the client interface for whatever storage mechanism implemented
