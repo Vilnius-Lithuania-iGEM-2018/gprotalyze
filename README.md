@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Vilnius-Lithuania-iGEM-2018/gprotalyze.svg?branch=master)](https://travis-ci.org/Vilnius-Lithuania-iGEM-2018/gprotalyze)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Vilnius-Lithuania-iGEM-2018/gprotalyze)](https://goreportcard.com/report/github.com/Vilnius-Lithuania-iGEM-2018/gprotalyze)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b4f00e563c2a98e1df9f/maintainability)](https://codeclimate.com/github/Vilnius-Lithuania-iGEM-2018/gprotalyze/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/b4f00e563c2a98e1df9f/test_coverage)](https://codeclimate.com/github/Vilnius-Lithuania-iGEM-2018/gprotalyze/test_coverage)
