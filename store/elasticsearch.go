@@ -9,6 +9,7 @@ import (
 	"errors"
 )
 
+// NewElasticStore creates and returns elastic client
 func NewElasticStore(context context.Context) (*ElasticStore, error) {
 	storeClient, err := elastic.NewClient()
 	if err != nil {
@@ -22,6 +23,7 @@ func NewElasticStore(context context.Context) (*ElasticStore, error) {
 	return &store, err
 }
 
+// ElasticStore is the elastic client implementation
 type ElasticStore struct {
 	client *elastic.Client
 	context context.Context
