@@ -11,15 +11,18 @@ import (
 
 // NewElasticStore creates and returns elastic client
 func NewElasticStore(context context.Context) (*ElasticStore, error) {
-	storeClient, err := elastic.NewClient()
+	logInstance := logrus.New()
+	storeClient, err := elastic.NewSimpleClient(elastic.SetURL("http://127.0.0.1:9200"))
 	if err != nil {
+		logInstance.Error(err)
 		return nil, err
 	}
 	store := ElasticStore{
 		client:  storeClient,
 		context: context,
-		logger:  logrus.New(),
+		logger:  logInstance,
 	}
+
 	return &store, err
 }
 
@@ -30,7 +33,7 @@ type ElasticStore struct {
 	logger  *logrus.Logger
 }
 
-func (store ElasticStore) Store(item DatabaseItem) error {
+func (store ElasticStore) Store(item Document) error {
 	response, err := store.client.Index().
 		Index("gprotalyze").
 		Type(item.DataType).
@@ -41,7 +44,7 @@ func (store ElasticStore) Store(item DatabaseItem) error {
 	return err
 }
 
-func (store ElasticStore) BulkStore(items []DatabaseItem) error {
+func (store ElasticStore) BulkStore(items []Document) error {
 	bulk := store.client.Bulk()
 	for _, item := range items {
 		bulk.Add(elastic.NewBulkIndexRequest().
@@ -70,33 +73,33 @@ func (store ElasticStore) BulkStore(items []DatabaseItem) error {
 	return nil
 }
 
-func (store ElasticStore) Get(id string) (DatabaseItem, error) {
+func (store ElasticStore) Get(id string) (Document, error) {
 	response, err := store.client.Get().Index("gprotalyze").Do(store.context)
 
 	if err != nil {
-		return DatabaseItem{}, err
+		return Document{}, err
 	}
 
 	if !response.Found {
 		store.logger.WithField("id", id).Debug("Not found")
-		return DatabaseItem{}, errors.New("document not found")
+		return Document{}, errors.New("document not found")
 	}
 
-	return DatabaseItem{
+	return Document{
 		DataType: response.Type,
 		Id:       response.Id,
 		Data:     response.Fields,
 	}, nil
 }
 
-func (store ElasticStore) Update(item DatabaseItem) error {
+func (store ElasticStore) Update(item Document) error {
 	return errors.New("unimplemented")
 }
 
-func (store ElasticStore) MassUpdate(items []DatabaseItem) error {
+func (store ElasticStore) MassUpdate(items []Document) error {
 	return errors.New("unimplemented")
 }
 
-func (store ElasticStore) Query(query string) ([]DatabaseItem, error) {
+func (store ElasticStore) Query(query string) ([]Document, error) {
 	return nil, errors.New("unimplemented")
 }

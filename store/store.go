@@ -2,9 +2,9 @@
 // The method and place depends on implementation
 package store
 
-// DatabaseItem is a single database document
+// Document is a single database document
 // No schema past DataType and Id
-type DatabaseItem struct {
+type Document struct {
 	DataType string
 	Id       string
 	Data     interface{}
@@ -14,20 +14,20 @@ type DatabaseItem struct {
 type Store interface {
 
 	// Store stores a single document into database
-	Store(item DatabaseItem) error
+	Store(item Document) error
 
 	// BulkStore stores multiple documents at once
-	BulkStore(items []DatabaseItem) error
+	BulkStore(items []Document) error
 
 	// Get returns an item according to it's id
-	Get(id string) (DatabaseItem, error)
+	Get(id string) (Document, error)
 
 	// Update finds the item by id and changes it's value
-	Update(item DatabaseItem) error
+	Update(item Document) error
 
 	// MassUpdate gets a lot of items and changes their value
-	MassUpdate(items []DatabaseItem) error
+	MassUpdate(items []Document) error
 
 	// Query performs a search on existing documents in the database
-	Query(query string) ([]DatabaseItem, error)
+	Query(query string) ([]Document, error)
 }
