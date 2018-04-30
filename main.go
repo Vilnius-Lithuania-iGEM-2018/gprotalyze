@@ -15,11 +15,11 @@ func main() {
 		Id: "1",
 		DataType: "analysis",
 		Data: struct {
-			data []string
-			tags []string
+			Data []string `json:"data"`
+			Tags []string `json:"tags"`
 		}{
-			data: []string{"data1", "data2", "data3"},
-			tags: []string{"tag1", "tag2", "tag3"},
+			Data: []string{"data1", "data2", "data3"},
+			Tags: []string{"tag1", "tag2", "tag3"},
 		},
 	})
 }
