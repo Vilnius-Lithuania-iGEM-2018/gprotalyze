@@ -59,7 +59,6 @@ func (plugin PythonPlugin) Run() error {
 	python.PyErr_Clear()
 	pFunc := plugin.pythonModule.GetAttrString("hello")
 	if python.PyErr_Occurred() == nil || pFunc.Check_Callable() {
-		plugin.log.Info(pFunc)
 		pFunc.CallObject(python.PyTuple_New(0))
 	} else {
 		return errors.New("the module loaded is not callable")

@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"github.com/Vilnius-Lithuania-iGEM-2018/gprotalyze/plugins"
 	"github.com/Vilnius-Lithuania-iGEM-2018/gprotalyze/store"
 )
@@ -13,8 +12,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Printf("Module: %s\n", plugin)
 	plugin.Run()
 
 	elastic, err := store.NewElasticStore(context.Background())
