@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
-	"github.com/Vilnius-Lithuania-iGEM-2018/gprotalyze/store"
 	"fmt"
 	"github.com/Vilnius-Lithuania-iGEM-2018/gprotalyze/plugins"
+	"github.com/Vilnius-Lithuania-iGEM-2018/gprotalyze/store"
 )
 
 func main() {
