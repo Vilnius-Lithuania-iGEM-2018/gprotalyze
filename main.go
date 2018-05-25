@@ -1,18 +1,29 @@
 package main
 
 import (
-	"github.com/Vilnius-Lithuania-iGEM-2018/gprotalyze/store"
 	"context"
+	"github.com/Vilnius-Lithuania-iGEM-2018/gprotalyze/store"
+	"fmt"
+	"github.com/Vilnius-Lithuania-iGEM-2018/gprotalyze/plugins"
 )
 
 func main() {
+	// /Users/lukas.praninskas/Documents/Projects/golang/src/github.com/Vilnius-Lithuania-iGEM-2018/gprotalyze
+	plugin, err := plugins.LoadPythonPlugin("plugin")
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Module: %s\n", plugin)
+	plugin.Run()
+
 	elastic, err := store.NewElasticStore(context.Background())
 	if err != nil {
 		panic(err)
 	}
 
 	elastic.Store(store.Document{
-		Id: "1",
+		Id:       "1",
 		DataType: "analysis",
 		Data: struct {
 			Data []string `json:"data"`

@@ -29,6 +29,12 @@
   version = "v0.8.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/sbinet/go-python"
+  packages = ["."]
+  revision = "f976f61134dc6f5b4920941eb1b0e7cec7e4ef4c"
+
+[[projects]]
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
@@ -52,6 +58,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "bf05ef8b33171111d17df33c33fa4281773ed410908b911cc758ab5817884082"
+  inputs-digest = "0da673a307af1022f6b9755380525e9aa2cdd6a30f5f8a57dbf8971817126c8d"
   solver-name = "gps-cdcl"
   solver-version = 1

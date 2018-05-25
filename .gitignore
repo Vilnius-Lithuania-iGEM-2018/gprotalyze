@@ -16,3 +16,4 @@
 vendor/
 
 gprotalyze
+**/*.pyc
