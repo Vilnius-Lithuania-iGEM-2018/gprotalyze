@@ -37,17 +37,16 @@ func LoadPythonPlugin(filename string) (*PythonPlugin, error) {
 			"importFile": filename,
 		}).Debug("loaded module")
 		return nil, errors.New("cannot load python module")
-	} else {
-		return &PythonPlugin{
-			log:          loggerInstance,
-			pythonModule: module,
-			context: PluginContext{
-				Name:     filename,
-				FilePath: filename,
-				Version:  "1",
-			},
-		}, nil
 	}
+	return &PythonPlugin{
+		log:          loggerInstance,
+		pythonModule: module,
+		context: PluginContext{
+			Name:     filename,
+			FilePath: filename,
+			Version:  "1",
+		},
+	}, nil
 }
 
 // PythonPlugin is an inherited struct from the generic Plugin
