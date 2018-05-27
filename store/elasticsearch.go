@@ -33,6 +33,7 @@ type ElasticStore struct {
 	logger  *logrus.Logger
 }
 
+// Store stores a single document in a single network operation
 func (store ElasticStore) Store(item Document) error {
 	response, err := store.client.Index().
 		Index("gprotalyze").
@@ -44,6 +45,7 @@ func (store ElasticStore) Store(item Document) error {
 	return err
 }
 
+// BulkStore stores multiple documents in one network operation
 func (store ElasticStore) BulkStore(items []Document) error {
 	bulk := store.client.Bulk()
 	for _, item := range items {
@@ -73,6 +75,7 @@ func (store ElasticStore) BulkStore(items []Document) error {
 	return nil
 }
 
+// Get gets a document according to it's id
 func (store ElasticStore) Get(id string) (Document, error) {
 	response, err := store.client.Get().Index("gprotalyze").Do(store.context)
 
@@ -92,14 +95,17 @@ func (store ElasticStore) Get(id string) (Document, error) {
 	}, nil
 }
 
+// Update just does an update operation
 func (store ElasticStore) Update(item Document) error {
 	return errors.New("unimplemented")
 }
 
+// MassUpdate updates many documents in a single operation
 func (store ElasticStore) MassUpdate(items []Document) error {
 	return errors.New("unimplemented")
 }
 
+// Query performs a search function and returns all of the found documents
 func (store ElasticStore) Query(query string) ([]Document, error) {
 	return nil, errors.New("unimplemented")
 }

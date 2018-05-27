@@ -26,6 +26,7 @@ func init() {
 	}()
 }
 
+// LoadPythonPlugin loads a python plugin from python path, according to the filename
 func LoadPythonPlugin(filename string) (*PythonPlugin, error) {
 	loggerInstance := logrus.New()
 	module := python.PyImport_Import(python.PyString_FromString(filename))
@@ -49,12 +50,14 @@ func LoadPythonPlugin(filename string) (*PythonPlugin, error) {
 	}
 }
 
+// PythonPlugin is an inherited struct from the generic Plugin
 type PythonPlugin struct {
 	pythonModule *python.PyObject
 	context      PluginContext
 	log          *logrus.Logger
 }
 
+// Run performs a run on the plugin
 func (plugin PythonPlugin) Run() error {
 	python.PyErr_Clear()
 	pFunc := plugin.pythonModule.GetAttrString("hello")
@@ -66,6 +69,7 @@ func (plugin PythonPlugin) Run() error {
 	return nil
 }
 
+// GetContext returns the context of the plugin
 func (plugin PythonPlugin) GetContext() *PluginContext {
 	return &plugin.context
 }
