@@ -8,3 +8,8 @@ services:
       - "9300:9300"
     environment:
       - discovery.type=single-node
+  kibana:
+      image: docker.elastic.co/kibana/kibana:6.2.4
+      container_name: kibana
+      ports:
+        - "5601:5601"
