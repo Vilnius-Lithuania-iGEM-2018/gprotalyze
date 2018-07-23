@@ -1,26 +1,22 @@
 #include "go-python.h"
+#include <stdio.h>
 
 extern void cgoPythonSaysHi();
 
-PyMethodDef* initMethDef(size_t num) {
-    return (PyMethodDef*) malloc(num * sizeof(PyMethodDef));
-}
-
-void cPythonSaysHi() {
-    printf("%s", "C code says hi!");
+PyObject* cPythonSaysHi(PyObject *argn, PyObject *args) {
+    printf("%s!", "CPython says hi!!");
     cgoPythonSaysHi();
+    return NULL;
 }
 
-void setMethDef(PyMethodDef *definitions, size_t item, char *name, PyObject* (*pFunc)(PyObject*, PyObject*), int flags, char *doc) {
-	definitions[item].ml_name = name;
-	definitions[item].ml_meth = pFunc;
-	definitions[item].ml_flags = flags;
-	definitions[item].ml_doc = doc;
-}
+
+
 
 PyObject* InitGprotalyzeModule(){
-	PyMethodDef *methods = initMethDef(1);
-	setMethDef(methods, 0, "run_hello", (PyCFunction)cPythonSaysHi, METH_VARARGS, "Execute a greeting.");
+	PyMethodDef methods[] = {
+	    {"run_hello", cPythonSaysHi, METH_VARARGS, "Execute a greeting."},
+	    {NULL, NULL, 0, NULL}
+	};
 	return Py_InitModule("gprotalyze", methods);
 }
 

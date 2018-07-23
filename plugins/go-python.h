@@ -3,8 +3,6 @@
 
 #include <Python.h>
 
-void cPythonSaysHi();
-
 PyMethodDef* initMethDef(size_t);
 void setMethDef(PyMethodDef*, size_t, char*, PyCFunction pFunc, int, char*);
 PyObject* InitGprotalyzeModule();

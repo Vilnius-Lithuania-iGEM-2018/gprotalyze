@@ -85,9 +85,9 @@ func init() {
 	initializedModule = C.InitGprotalyzeModule()
 	loggerInstance.WithField("module", initializedModule).Debug()
 
-	if initializedModule == nil {
-		err := errors.New("python module could not be loaded")
-		panic(err)
+	if C.PyErr_Occurred() != nil {
+		C.PyErr_Print()
+		panic("Failed to load module")
 	}
 }
 
