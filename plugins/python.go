@@ -14,39 +14,24 @@ import (
 
 // PythonPlugin is an inherited struct from the generic Plugin
 type PythonPlugin struct {
-
-	// pythonModule is the gprotalyze package that is defined in CPython
-	pythonModule *C.PyObject
-
-	// pythonPlugin is the plugin that gprotalyze application loads and runs
-	pythonPlugin *C.PyObject
-
-	// context contains all the misc data about the plugin
-	context      PluginContext
-
-	// log is the instance that this concrete plugin uses to report errors
-	log          *logrus.Logger
+	pythonModule *C.PyObject // pythonModule is the gprotalyze package that is defined in CPython
+	pythonPlugin *C.PyObject // pythonPlugin is the plugin that gprotalyze application loads and runs
+	context      PluginContext // context contains all the misc data about the plugin
+	log          *logrus.Logger // log is the instance that this concrete plugin uses to report errors
 }
 
 var initializedModule *C.PyObject = nil
-var loggerInstance = logrus.New()
 
 // LoadPythonPlugin loads a python plugin from python path, according to the filename
 func LoadPythonPlugin(filename string) (*PythonPlugin, error) {
-	//module := python.PyImport_Import(python.PyString_FromString(filename))
-	//loggerInstance.WithField("module", module).Debug()
-	//if python.PyErr_Occurred() != nil {
-	//	python.PyErr_Print()
-	//	loggerInstance.WithFields(logrus.Fields{
-	//		"importFile": filename,
-	//	}).Debug("loaded module")
-	//	return nil, errors.New("cannot load python module")
-	//}
-
 	plugin := C.PyImport_ImportModule(C.CString(filename))
+	pyErr := C.PyErr_Occurred()
+	if pyErr != nil {
+		return nil, errors.New("failed to import plugin")
+	}
 
 	return &PythonPlugin{
-		log:          loggerInstance,
+		log:          logrus.New(),
 		pythonModule: initializedModule,
 		pythonPlugin: plugin,
 		context: PluginContext{
@@ -83,7 +68,6 @@ func init() {
 	}()
 
 	initializedModule = C.InitGprotalyzeModule()
-	loggerInstance.WithField("module", initializedModule).Debug()
 
 	if C.PyErr_Occurred() != nil {
 		C.PyErr_Print()

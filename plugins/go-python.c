@@ -9,9 +9,6 @@ PyObject* cPythonSaysHi(PyObject *argn, PyObject *args) {
     return NULL;
 }
 
-
-
-
 PyObject* InitGprotalyzeModule(){
 	PyMethodDef methods[] = {
 	    {"run_hello", cPythonSaysHi, METH_VARARGS, "Execute a greeting."},
