@@ -5,18 +5,18 @@ package plugins
 import "C"
 
 import (
-	"github.com/sirupsen/logrus"
-	"runtime"
 	"errors"
-	"os"
 	"fmt"
+	"github.com/sirupsen/logrus"
+	"os"
+	"runtime"
 )
 
 // PythonPlugin is an inherited struct from the generic Plugin
 type PythonPlugin struct {
-	pythonModule *C.PyObject // pythonModule is the gprotalyze package that is defined in CPython
-	pythonPlugin *C.PyObject // pythonPlugin is the plugin that gprotalyze application loads and runs
-	context      PluginContext // context contains all the misc data about the plugin
+	pythonModule *C.PyObject    // pythonModule is the gprotalyze package that is defined in CPython
+	pythonPlugin *C.PyObject    // pythonPlugin is the plugin that gprotalyze application loads and runs
+	context      PluginContext  // context contains all the misc data about the plugin
 	log          *logrus.Logger // log is the instance that this concrete plugin uses to report errors
 }
 
@@ -94,4 +94,3 @@ func (plugin PythonPlugin) Run() error {
 func cgoPythonSaysHi() {
 	fmt.Printf("Hello from GO!")
 }
-
