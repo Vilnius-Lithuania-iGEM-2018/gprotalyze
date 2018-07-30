@@ -1,6 +1,8 @@
 package plugins
+import "C"
 
 // #cgo pkg-config: python-2.7
+// #cgo CFLAGS: -DPNG_DEBUG=1 -Og -g
 // #include "go-python.h"
 import "C"
 
@@ -24,10 +26,12 @@ var initializedModule *C.PyObject = nil
 
 // LoadPythonPlugin loads a python plugin from python path, according to the filename
 func LoadPythonPlugin(filename string) (*PythonPlugin, error) {
+	C.PyErr_Clear()
 	plugin := C.PyImport_ImportModule(C.CString(filename))
 	pyErr := C.PyErr_Occurred()
 	if pyErr != nil {
-		return nil, errors.New("failed to import plugin")
+		C.PyErr_Print()
+		return nil, errors.New("cannot import plugin")
 	}
 
 	return &PythonPlugin{
@@ -58,7 +62,7 @@ func init() {
 		panic(errors.New("unable to get current working directory"))
 	}
 
-	C.PySys_SetPath(C.CString(cwd + "python-plugins"))
+	C.PySys_SetPath(C.CString(cwd + "/python-plugins"))
 
 	args := &str{value: true}
 	go func() {
