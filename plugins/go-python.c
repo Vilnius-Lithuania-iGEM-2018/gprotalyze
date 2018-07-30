@@ -6,7 +6,7 @@ extern void cgoPythonSaysHi();
 PyObject* cPythonSaysHi(PyObject *argc, PyObject *args) {
     printf("%s\n", "CPython says hi!!");
     cgoPythonSaysHi();
-    return NULL;
+    return Py_None;
 }
 
 PyObject* InitGprotalyzeModule(){
