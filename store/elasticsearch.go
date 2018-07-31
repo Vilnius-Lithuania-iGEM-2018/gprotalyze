@@ -60,11 +60,11 @@ func (store ElasticStore) BulkStore(items []Document) error {
 		return err
 	}
 	if len(response.Succeeded()) != bulk.NumberOfActions() {
-		return errors.New(
-			fmt.Sprintf(
-				"Expected %d succeeded, got %d",
-				bulk.NumberOfActions(),
-				len(response.Succeeded())))
+		return fmt.Errorf(
+			"Expected %d succeeded, got %d",
+			bulk.NumberOfActions(),
+			len(response.Succeeded()),
+		)
 	}
 	store.logger.WithFields(logrus.Fields{
 		"launched":  bulk.NumberOfActions(),

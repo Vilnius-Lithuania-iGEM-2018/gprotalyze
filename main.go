@@ -7,7 +7,6 @@ import (
 )
 
 func main() {
-	// /Users/lukas.praninskas/Documents/Projects/golang/src/github.com/Vilnius-Lithuania-iGEM-2018/gprotalyze
 	plugin, err := plugins.LoadPythonPlugin("plugin")
 	if err != nil {
 		panic(err)
