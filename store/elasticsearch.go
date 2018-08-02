@@ -10,7 +10,7 @@ import (
 )
 
 // NewElasticStore creates and returns elastic client
-func NewElasticStore(context context.Context) (*ElasticStore, error) {
+func NewElasticStore(context context.Context) (Store, error) {
 	logInstance := logrus.New()
 	storeClient, err := elastic.NewSimpleClient(elastic.SetURL("http://127.0.0.1:9200"))
 	if err != nil {
@@ -23,7 +23,7 @@ func NewElasticStore(context context.Context) (*ElasticStore, error) {
 		logger:  logInstance,
 	}
 
-	return &store, err
+	return store, err
 }
 
 // ElasticStore is the elastic client implementation
