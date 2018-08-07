@@ -10,6 +10,7 @@ import "C"
 import (
 	"errors"
 	"fmt"
+	"github.com/Vilnius-Lithuania-iGEM-2018/gprotalyze/store"
 	"github.com/sirupsen/logrus"
 	"os"
 	"runtime"
@@ -17,16 +18,18 @@ import (
 
 // PythonPlugin is an inherited struct from the generic Plugin
 type PythonPlugin struct {
-	pythonModule *C.PyObject    // pythonModule is the gprotalyze package that is defined in CPython
-	pythonPlugin *C.PyObject    // pythonPlugin is the plugin that gprotalyze application loads and runs
-	context      PluginContext  // context contains all the misc data about the plugin
+	pythonModule *C.PyObject   // pythonModule is the gprotalyze package that is defined in CPython
+	pythonPlugin *C.PyObject   // pythonPlugin is the plugin that gprotalyze application loads and runs
+	context      PluginContext // context contains all the misc data about the plugin
+	store        store.Store
 	log          *logrus.Logger // log is the instance that this concrete plugin uses to report errors
 }
 
 var initializedModule *C.PyObject = nil
+var pythonPlugin PythonPlugin
 
 // LoadPythonPlugin loads a python plugin from python path, according to the filename
-func LoadPythonPlugin(filename string) (*PythonPlugin, error) {
+func LoadPythonPlugin(filename string, storage store.Store) (*PythonPlugin, error) {
 	C.PyErr_Clear()
 	plugin := C.PyImport_ImportModule(C.CString(filename))
 	pyErr := C.PyErr_Occurred()
@@ -35,16 +38,18 @@ func LoadPythonPlugin(filename string) (*PythonPlugin, error) {
 		return nil, errors.New("cannot import plugin")
 	}
 
-	return &PythonPlugin{
+	pythonPlugin = PythonPlugin{
 		log:          logrus.New(),
 		pythonModule: initializedModule,
 		pythonPlugin: plugin,
+		store:        storage,
 		context: PluginContext{
 			Name:     filename,
 			FilePath: filename,
 			Version:  "1",
 		},
-	}, nil
+	}
+	return &pythonPlugin, nil
 }
 
 func init() {
@@ -97,5 +102,19 @@ func (plugin PythonPlugin) Run() error {
 
 //export cgoPythonSaysHi
 func cgoPythonSaysHi() {
-	fmt.Printf("Hello from GO!")
+	fmt.Printf("%s\n", "Hello from plugin-invoked GO!")
+}
+
+//export storeDocument
+func storeDocument() {
+	pythonPlugin.store.Store(store.Document{
+		DataType: "analysis",
+		Data: struct {
+			Data []string `json:"data"`
+			Tags []string `json:"tags"`
+		}{
+			Data: []string{"data1", "data2", "data3"},
+			Tags: []string{"tag1", "tag2", "tag3"},
+		},
+	})
 }
